@@ -1,0 +1,46 @@
+Licensed under the EUPL, Version 1.2 or - as soon they will be approved by the
+European Commission – subsequent versions of the EUPL (the "Licence").
+You may not use this work except in compliance with the Licence.
+
+You find a copy of the Licence in the "Licence" file or at
+https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the Licence is distributed on an "AS IS" basis,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied.
+In case of changes by gematik find details in the "Readme" file.
+
+See the Licence for the specific language governing permissions and limitations under the Licence.
+
+This project includes:
+  Apache Commons Codec under Apache License, Version 2.0
+  Apache Commons Logging under The Apache Software License, Version 2.0
+  Apache HttpClient under Apache License, Version 2.0
+  Apache HttpCore under Apache License, Version 2.0
+  AssertJ fluent assertions under Apache License, Version 2.0
+  Byte Buddy (without dependencies) under Apache License, Version 2.0
+  Byte Buddy agent under Apache License, Version 2.0
+  DEMIS Commons Library under Apache Software License 2.0
+  Jackson-annotations under The Apache Software License, Version 2.0
+  Jackson-core under The Apache Software License, Version 2.0
+  jackson-databind under The Apache Software License, Version 2.0
+  JUnit Jupiter (Aggregator) under Eclipse Public License v2.0
+  JUnit Jupiter API under Eclipse Public License v2.0
+  JUnit Jupiter Engine under Eclipse Public License v2.0
+  JUnit Jupiter Params under Eclipse Public License v2.0
+  JUnit Platform Commons under Eclipse Public License v2.0
+  JUnit Platform Engine API under Eclipse Public License v2.0
+  Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
+  Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
+  mockito-core under The MIT License
+  mockito-inline under The MIT License
+  mockito-junit-jupiter under The MIT License
+  Objenesis under Apache License, Version 2.0
+  org.apiguardian:apiguardian-api under The Apache License, Version 2.0
+  org.opentest4j:opentest4j under The Apache License, Version 2.0
+  Project Lombok under The MIT License
+  SLF4J API Module under MIT License
+  System Stubs Core under MIT License
+  System Stubs Jupiter under MIT License
+
+

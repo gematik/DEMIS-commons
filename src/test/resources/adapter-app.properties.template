@@ -1,0 +1,3 @@
+idp.lab.authcertkeystore=<set-path-to-p12>
+idp.lab.authcertpassword=<set-p12-password>
+idp.lab.authcertalias=<set-cert-alias>
