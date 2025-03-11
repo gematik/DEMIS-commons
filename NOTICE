@@ -17,10 +17,10 @@ This project includes:
   Apache Commons Logging under The Apache Software License, Version 2.0
   Apache HttpClient under Apache License, Version 2.0
   Apache HttpCore under Apache License, Version 2.0
-  AssertJ fluent assertions under Apache License, Version 2.0
+  AssertJ Core under Apache-2.0
   Byte Buddy (without dependencies) under Apache License, Version 2.0
   Byte Buddy agent under Apache License, Version 2.0
-  DEMIS Commons Library under Apache Software License 2.0
+  DEMIS Commons Library under Licensed under the EUPL 1.2
   Jackson-annotations under The Apache Software License, Version 2.0
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
@@ -32,14 +32,13 @@ This project includes:
   JUnit Platform Engine API under Eclipse Public License v2.0
   Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
-  mockito-core under The MIT License
-  mockito-inline under The MIT License
-  mockito-junit-jupiter under The MIT License
+  mockito-core under MIT
+  mockito-junit-jupiter under MIT
   Objenesis under Apache License, Version 2.0
   org.apiguardian:apiguardian-api under The Apache License, Version 2.0
   org.opentest4j:opentest4j under The Apache License, Version 2.0
   Project Lombok under The MIT License
-  SLF4J API Module under MIT License
+  SLF4J API Module under MIT
   System Stubs Core under MIT License
   System Stubs Jupiter under MIT License
 
