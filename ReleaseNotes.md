@@ -2,6 +2,10 @@
 
 # Release-Notes demis-commons
 
+## Release 3.3.1
+- Updated libraries
+- Updated ospo-resources for adding additional notes and disclaimer
+
 ## Release 3.3.0
 - Updated Plugins and Dependencies
 - Add new License- and Deployment-Handling
