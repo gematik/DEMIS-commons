@@ -6,7 +6,7 @@
 
     <groupId>de.gematik.demis</groupId>
     <artifactId>commons</artifactId>
-    <version>3.3.1</version>
+    <version>3.3.2</version>
     <name>DEMIS Commons Library</name>
     <description>Library containing common utility methods for the DEMIS applications</description>
     <url>https://github.com/gematik/DEMIS-commons</url>
@@ -25,20 +25,21 @@
         <version.maven-compiler-plugin>3.14.1</version.maven-compiler-plugin>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <jackson.version>2.19.2</jackson.version>
+        <jackson-annotations.version>2.20</jackson-annotations.version>
+        <jackson.version>2.20.1</jackson.version>
         <slf4j.version>2.0.17</slf4j.version>
         <httpclient.version>4.5.14</httpclient.version> <!-- To be removed -->
         <lombok.version>1.18.42</lombok.version>
-        <junit-jupiter.version>5.13.4</junit-jupiter.version>
+        <junit-jupiter.version>6.0.1</junit-jupiter.version>
         <assertj-core.version>3.27.6</assertj-core.version>
-        <mockito.version>5.20.0</mockito.version>
+        <mockito.version>5.21.0</mockito.version>
         <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
-        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <fmt.maven.plugin.version>2.29</fmt.maven.plugin.version>
-        <enforcer.plugin.version>3.6.1</enforcer.plugin.version>
+        <enforcer.plugin.version>3.6.2</enforcer.plugin.version>
         <system-stubs-jupiter.version>2.1.8</system-stubs-jupiter.version>
-        <logback-classic.version>1.5.18</logback-classic.version>
+        <logback-classic.version>1.5.22</logback-classic.version>
         <sonar.sources>.</sonar.sources>
         <sonar.exclusions>
             src/test/**,
@@ -71,7 +72,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
+            <version>${jackson-annotations.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -165,7 +166,7 @@
                     <dependency>
                         <groupId>de.gematik</groupId>
                         <artifactId>ospo-resources</artifactId>
-                        <version>1.3.0</version>
+                        <version>1.3.2</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -347,7 +348,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.3.1</version>
+                        <version>3.4.0</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
