@@ -6,14 +6,14 @@
 
     <groupId>de.gematik.demis</groupId>
     <artifactId>commons</artifactId>
-    <version>3.3.2</version>
+    <version>3.4.0</version>
     <name>DEMIS Commons Library</name>
     <description>Library containing common utility methods for the DEMIS applications</description>
     <url>https://github.com/gematik/DEMIS-commons</url>
 
     <licenses>
         <license>
-            <name>Licensed under the EUPL 1.2</name>
+            <name>EUPL-1.2</name>
             <url>https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12</url>
         </license>
     </licenses>
@@ -23,13 +23,13 @@
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
         <version.maven.javadoc>3.12.0</version.maven.javadoc>
         <version.maven-compiler-plugin>3.14.1</version.maven-compiler-plugin>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <jackson-annotations.version>2.20</jackson-annotations.version>
-        <jackson.version>2.20.1</jackson.version>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
+        <jackson-annotations.version>2.21</jackson-annotations.version>
+        <jackson.version>2.21.1</jackson.version>
         <slf4j.version>2.0.17</slf4j.version>
         <httpclient.version>4.5.14</httpclient.version> <!-- To be removed -->
-        <lombok.version>1.18.42</lombok.version>
+        <lombok.version>1.18.44</lombok.version>
         <junit-jupiter.version>6.0.1</junit-jupiter.version>
         <assertj-core.version>3.27.6</assertj-core.version>
         <mockito.version>5.21.0</mockito.version>
@@ -229,6 +229,23 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Compile -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.maven-compiler-plugin}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
             <!-- Autoformat classes -->
             <plugin>
