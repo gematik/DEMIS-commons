@@ -20,7 +20,7 @@ This project includes:
   AssertJ Core under Apache-2.0
   Byte Buddy (without dependencies) under Apache License, Version 2.0
   Byte Buddy agent under Apache License, Version 2.0
-  DEMIS Commons Library under Licensed under the EUPL 1.2
+  DEMIS Commons Library under EUPL-1.2
   Jackson-annotations under The Apache Software License, Version 2.0
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
