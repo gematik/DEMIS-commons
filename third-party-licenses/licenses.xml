@@ -180,6 +180,45 @@
       </licenses>
     </dependency>
     <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcpkix-jdk18on</artifactId>
+      <version>1.83</version>
+      <licenses>
+        <license>
+          <name>Bouncy Castle Licence</name>
+          <url>https://www.bouncycastle.org/licence.html</url>
+          <distribution>repo</distribution>
+          <file>bouncy castle licence - licence.html</file>
+        </license>
+      </licenses>
+    </dependency>
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk18on</artifactId>
+      <version>1.83</version>
+      <licenses>
+        <license>
+          <name>Bouncy Castle Licence</name>
+          <url>https://www.bouncycastle.org/licence.html</url>
+          <distribution>repo</distribution>
+          <file>bouncy castle licence - licence.html</file>
+        </license>
+      </licenses>
+    </dependency>
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcutil-jdk18on</artifactId>
+      <version>1.83</version>
+      <licenses>
+        <license>
+          <name>Bouncy Castle Licence</name>
+          <url>https://www.bouncycastle.org/licence.html</url>
+          <distribution>repo</distribution>
+          <file>bouncy castle licence - licence.html</file>
+        </license>
+      </licenses>
+    </dependency>
+    <dependency>
       <groupId>org.jspecify</groupId>
       <artifactId>jspecify</artifactId>
       <version>1.0.0</version>

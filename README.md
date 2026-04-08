@@ -34,9 +34,10 @@ always activated.
 
 **Beware**: 
 
-The Environment variable `ENABLE_HOSTNAME_VERIFICATION`, when set to `true`, will cause the set of the
-following Java Property: `jdk.internal.httpclient.disableHostnameVerification` to be set to `true`, disabling then the
-Hostname Verification for all the HTTP Communications in an application.
+The Environment variable `ENABLE_HOSTNAME_VERIFICATION`, when set to `false`, disables hostname
+verification for all HTTP communications performed by this library. Internally this is implemented
+via `SSLParameters.setEndpointIdentificationAlgorithm("")`, the standard public Java API for
+controlling hostname verification in `java.net.http.HttpClient`.
 
 ### Quality Gates
 

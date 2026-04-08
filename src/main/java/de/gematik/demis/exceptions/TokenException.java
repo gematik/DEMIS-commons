@@ -31,4 +31,8 @@ public class TokenException extends RuntimeException {
   public TokenException(String message) {
     super(message);
   }
+
+  public TokenException(Throwable exception) {
+    super(exception);
+  }
 }

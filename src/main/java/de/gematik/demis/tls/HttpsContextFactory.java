@@ -53,6 +53,21 @@ public final class HttpsContextFactory {
   private static final TrustManager[] UNSAFE_TRUST_MANAGERS =
       UnsafeTrustManagerFactory.getUnsafeTrustManagers();
 
+  /**
+   * Acquires the global keystore lock managed by {@link KeystoreLoader}. Callers that directly use
+   * {@link KeystoreLoader} together with {@link KeyManagerFactory#init} should bracket the whole
+   * sequence with {@link #lockKeystore()} / {@link #unlockKeystore()} to prevent concurrent PKCS12
+   * access.
+   */
+  public static void lockKeystore() {
+    KeystoreLoader.lock();
+  }
+
+  /** Releases the global keystore lock previously acquired via {@link #lockKeystore()}. */
+  public static void unlockKeystore() {
+    KeystoreLoader.unlock();
+  }
+
   private HttpsContextFactory() {}
 
   /**
@@ -66,19 +81,18 @@ public final class HttpsContextFactory {
   public static SSLContext createSslContext(
       @NonNull final Keystore clientKeystore, @NonNull final Keystore serverTruststore)
       throws KeystoreException {
+    // Serialize the entire keystore-load + KeyManagerFactory-init sequence via the central lock
+    // in KeystoreLoader.  KeyManagerFactory.init() internally calls KeyStore.getKey() which is
+    // also not thread-safe on PKCS12 keystores, so the lock must cover more than just load().
+    KeystoreLoader.lock();
     try {
-      // Load Keystore for clientKeystore
-      final var keystore = KeystoreLoader.load(clientKeystore);
-      // initialize KeyManagerFactory
-      final var keyMgrFactory = initializeKeyManager(keystore, clientKeystore.getPassword());
+      final KeyStore keystore = KeystoreLoader.load(clientKeystore);
+      final KeyManagerFactory keyMgrFactory = resolveKeyManagerFactory(clientKeystore, keystore);
 
-      // Load Truststore
-      final var truststore = KeystoreLoader.load(serverTruststore);
+      final KeyStore serverkeystore = KeystoreLoader.load(serverTruststore);
+      final TrustManager[] trustManagers = getTrustManagers(serverkeystore);
 
-      // Get trust managers
-      final var trustManagers = getTrustManagers(truststore);
-
-      final var sslContext = SSLContext.getInstance("TLSv1.2");
+      final SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
       sslContext.init(keyMgrFactory.getKeyManagers(), trustManagers, null);
       return sslContext;
     } catch (final NoSuchAlgorithmException
@@ -88,19 +102,75 @@ public final class HttpsContextFactory {
         | IOException e) {
       log.error(LOG_ERROR_MESSAGE_FORMAT, e.getLocalizedMessage(), e);
       throw new KeystoreException(e.getLocalizedMessage());
+    } finally {
+      KeystoreLoader.unlock();
+    }
+  }
+
+  /**
+   * Resolves the {@link KeyManagerFactory} by trying the effective key password first. If that
+   * fails and a separate private-key password was provided, it retries with the keystore password
+   * as fallback (resilience against mismatched passwords).
+   *
+   * @param clientKeystore the keystore configuration holding password information
+   * @param keystore the loaded {@link KeyStore} instance
+   * @return an initialized {@link KeyManagerFactory}
+   * @throws KeystoreException if no password combination succeeds
+   */
+  private static KeyManagerFactory resolveKeyManagerFactory(
+      final Keystore clientKeystore, final KeyStore keystore) throws KeystoreException {
+    final String keystorePassword = clientKeystore.getPassword();
+    final String privateKeyPassword = clientKeystore.getPrivateKeyPassword();
+    // prefer private-key password when present, fallback to keystore password
+    final String effectiveKeyPassword =
+        privateKeyPassword != null ? privateKeyPassword : keystorePassword;
+    try {
+      return initializeKeyManager(keystore, effectiveKeyPassword);
+    } catch (KeystoreException e) {
+      log.warn(
+          "Initializing KeyManager with chosen key password failed (will retry with keystore password): {}",
+          e.getLocalizedMessage());
+      if (privateKeyPassword != null && !privateKeyPassword.equals(keystorePassword)) {
+        // retry with keystore password as fallback
+        return initializeKeyManager(keystore, keystorePassword);
+      }
+      log.error(LOG_ERROR_MESSAGE_FORMAT, e.getLocalizedMessage(), e);
+      throw new KeystoreException(e);
     }
   }
 
   /**
    * Creates SSL Parameters for the client.
    *
-   * @param enableMutualAuthentication if true, sets the requirement of mTLS *
-   * @return the {@link SSLParameters} object
+   * @param enableMutualAuthentication if true, sets the requirement of mTLS
+   * @return the {@link SSLParameters} object with hostname verification enabled (HTTPS algorithm)
    */
   public static SSLParameters createSslParameters(final boolean enableMutualAuthentication) {
-    final SSLParameters sslParam = new SSLParameters();
-    sslParam.setNeedClientAuth(enableMutualAuthentication);
-    return sslParam;
+    return createSslParameters(enableMutualAuthentication, true);
+  }
+
+  /**
+   * Creates SSL Parameters for the client.
+   *
+   * <p>When {@code enableHostnameVerification} is {@code false}, the endpoint identification
+   * algorithm is set to an empty string, which disables hostname verification in {@link
+   * java.net.http.HttpClient} without relying on the internal system property {@code
+   * jdk.internal.httpclient.disableHostnameVerification}.
+   *
+   * @param enableMutualAuthentication if true, sets the requirement of mTLS
+   * @param enableHostnameVerification if false, disables hostname verification via the standard
+   *     {@link SSLParameters} API
+   * @return the configured {@link SSLParameters} object
+   */
+  public static SSLParameters createSslParameters(
+      final boolean enableMutualAuthentication, final boolean enableHostnameVerification) {
+    final SSLParameters params = new SSLParameters();
+    params.setNeedClientAuth(enableMutualAuthentication);
+    // Empty string disables endpoint identification (hostname check) in java.net.http.HttpClient.
+    // This is the official public API alternative to the internal system property
+    // jdk.internal.httpclient.disableHostnameVerification.
+    params.setEndpointIdentificationAlgorithm(enableHostnameVerification ? "HTTPS" : "");
+    return params;
   }
 
   /**
@@ -134,7 +204,6 @@ public final class HttpsContextFactory {
    */
   public static TrustManagerFactory initializeTrustManager(@NonNull final KeyStore truststore)
       throws KeystoreException {
-
     try {
       final TrustManagerFactory trustManagerFactory =
           TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -150,12 +219,10 @@ public final class HttpsContextFactory {
 
     if (!isValidationEnabled()) {
       log.warn("Using the Unsafe Trust Manager (Hostname Verification is deactivated)");
-      System.setProperty("jdk.internal.httpclient.disableHostnameVerification", "true");
       return UNSAFE_TRUST_MANAGERS;
     }
-
-    final var trustMgrFactory = initializeTrustManager(truststore);
-    return trustMgrFactory.getTrustManagers();
+    final TrustManagerFactory trustManagerFactory = initializeTrustManager(truststore);
+    return trustManagerFactory.getTrustManagers();
   }
 
   /**
@@ -164,11 +231,10 @@ public final class HttpsContextFactory {
    *
    * @return true by default, otherwise what is defined for the environment variable
    */
-  private static boolean isValidationEnabled() {
+  public static boolean isValidationEnabled() {
     if (!System.getenv().containsKey(DemisConstants.ENABLE_HOSTNAME_VERIFICATION_ENV_VAR)) {
       return true;
     }
-
-    return Boolean.valueOf(System.getenv(DemisConstants.ENABLE_HOSTNAME_VERIFICATION_ENV_VAR));
+    return Boolean.parseBoolean(System.getenv(DemisConstants.ENABLE_HOSTNAME_VERIFICATION_ENV_VAR));
   }
 }

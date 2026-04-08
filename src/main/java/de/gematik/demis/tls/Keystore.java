@@ -101,7 +101,7 @@ public class Keystore {
 
   public static Keystore createJKS(
       final byte[] data, final String password, final String alias, String privateKeyPassword) {
-    return new Keystore(data, password, KeyStoreType.JKS, privateKeyPassword, alias);
+    return new Keystore(data, password, KeyStoreType.JKS, alias, privateKeyPassword);
   }
 
   public static Keystore createJKS(final byte[] data, final String password) {
