@@ -2,6 +2,11 @@
 
 # Release-Notes demis-commons
 
+## Release 3.4.1
+- added ReleaseNotes check to pipelines
+- Rollback to Java 21
+- Reimplemented TokenClient and Keystore logic to handle Bad Padding Issues
+
 ## Release 3.4.0
 - Updated to Java 25
 

@@ -85,6 +85,30 @@ class KeystoreLoaderTest {
     Assertions.assertNotNull(privateKey);
   }
 
+  /**
+   * Regression test for: createJKS() had alias and privateKeyPassword swapped, causing
+   * UnrecoverableKeyException / BadPaddingException when loading the private key.
+   */
+  @Test
+  void expectCreateJksFactoryMethodSetsAliasAndPrivateKeyPasswordCorrectly() throws IOException {
+    final var rawData =
+        KeystoreLoader.loadKeystoreAsRawData("src/test/resources/certs/nginx.truststore");
+    final String expectedAlias = "myAlias";
+    final String expectedPrivateKeyPassword = "myPrivateKeyPassword";
+
+    final Keystore keystore =
+        Keystore.createJKS(rawData, "password", expectedAlias, expectedPrivateKeyPassword);
+
+    Assertions.assertEquals(
+        expectedAlias,
+        keystore.getAlias(),
+        "createJKS() must store the alias in the alias field (not privateKeyPassword)");
+    Assertions.assertEquals(
+        expectedPrivateKeyPassword,
+        keystore.getPrivateKeyPassword(),
+        "createJKS() must store privateKeyPassword in the privateKeyPassword field (not alias)");
+  }
+
   @Test
   void expectFailureOnInvalidInput() {
     Assertions.assertThrows(NullPointerException.class, () -> KeystoreLoader.load(null));

@@ -6,7 +6,7 @@
 
     <groupId>de.gematik.demis</groupId>
     <artifactId>commons</artifactId>
-    <version>3.4.0</version>
+    <version>3.4.1</version>
     <name>DEMIS Commons Library</name>
     <description>Library containing common utility methods for the DEMIS applications</description>
     <url>https://github.com/gematik/DEMIS-commons</url>
@@ -23,8 +23,8 @@
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
         <version.maven.javadoc>3.12.0</version.maven.javadoc>
         <version.maven-compiler-plugin>3.14.1</version.maven-compiler-plugin>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <jackson-annotations.version>2.21</jackson-annotations.version>
         <jackson.version>2.21.1</jackson.version>
         <slf4j.version>2.0.17</slf4j.version>
@@ -40,6 +40,7 @@
         <enforcer.plugin.version>3.6.2</enforcer.plugin.version>
         <system-stubs-jupiter.version>2.1.8</system-stubs-jupiter.version>
         <logback-classic.version>1.5.22</logback-classic.version>
+        <bouncycastle.version>1.83</bouncycastle.version>
         <sonar.sources>.</sonar.sources>
         <sonar.exclusions>
             src/test/**,
@@ -124,6 +125,11 @@
             <artifactId>system-stubs-jupiter</artifactId>
             <version>${system-stubs-jupiter.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk18on</artifactId>
+            <version>${bouncycastle.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

@@ -18,6 +18,9 @@ This project includes:
   Apache HttpClient under Apache License, Version 2.0
   Apache HttpCore under Apache License, Version 2.0
   AssertJ Core under Apache-2.0
+  Bouncy Castle ASN.1 Extension and Utility APIs under Bouncy Castle Licence
+  Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs under Bouncy Castle Licence
+  Bouncy Castle Provider under Bouncy Castle Licence
   Byte Buddy (without dependencies) under Apache License, Version 2.0
   Byte Buddy agent under Apache License, Version 2.0
   DEMIS Commons Library under EUPL-1.2
